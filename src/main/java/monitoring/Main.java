@@ -32,8 +32,10 @@ public class Main {
 
     private static HashMap<String, String> androidIdIndex;
 
+    /*
     private static URL url;
     private static HttpURLConnection connection;
+     */
 
 
     public static void main(String[] args) {
@@ -62,8 +64,9 @@ public class Main {
             androidIdIndex.put(androidId, device); // Need to get androidId from out variable
         }
 
+        /*
         try {
-            url = new URL ("locolhost:8080/monitoring");
+            url = new URL ("http://locolhost:8080/monitoring");
             connection = (HttpURLConnection)url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json; utf-8");
@@ -74,6 +77,7 @@ public class Main {
             System.out.println("HTTP Request: " +e.getMessage() );
             System.out.println("HTTP Request: " +e.getStackTrace());
         }
+        */
 
 
         TimerTask timerTask = new TimerTask() {
@@ -81,7 +85,8 @@ public class Main {
             public void run() {
                 //test
                 System.out.println("Timer Run");
-                retrieveData(connection);
+                //retrieveData(connection);
+                retrieveData();
             }
         };
 
@@ -95,14 +100,54 @@ public class Main {
     }
 
 
-    public static void retrieveData(HttpURLConnection con) {
+    public static void retrieveData() {
         //TODO SQL query will be written here and logic of monitoring will be implemented
         //TODO The name of method can be changed
         //test
         System.out.println("Retrieve Data");
 
         for(String guid : androidIdIndex.keySet()) {
-            String jsonInputString = "{\"guid\": " + "\"" + guid + "\""  + "}";
+
+
+            try {
+                URL url = new URL("http://localhost:8080/monitoring");
+                HttpURLConnection con = (HttpURLConnection)url.openConnection();
+                con.setRequestMethod("POST");
+                con.setRequestProperty("Content-Type", "application/json; utf-8");
+                con.setRequestProperty("Accept", "application/json");
+                con.setDoOutput(true);
+
+                //test
+                guid = "123";
+                //String jsonInputString = "{\"guid\" : \"123\", \"time\" : \"000\"}";
+
+                String jsonInputString = "{\"guid\" : " + "\"" + guid + "\", \"time\" : \"0\"}";
+
+                try(OutputStream os = con.getOutputStream()) {
+                    System.out.println("Before Send");
+                    byte[] input = jsonInputString.getBytes("utf-8");
+                    os.write(input, 0, input.length);
+                    System.out.println("Send");
+                }
+
+                try(BufferedReader br = new BufferedReader(
+                        new InputStreamReader(con.getInputStream(), "utf-8"))) {
+                    StringBuilder response = new StringBuilder();
+                    String responseLine = null;
+                    while ((responseLine = br.readLine()) != null) {
+                        response.append(responseLine.trim());
+                        //TODO response should be converted to json to string
+
+                        choseAction(response.toString(), guid);
+                    }
+                    System.out.println("Response: " + response.toString());
+                }
+            }
+            catch (Exception e) {
+                System.out.println("Exception Message: " + e.getMessage());
+            }
+
+            /*String jsonInputString = "{\"guid\" : " + "\"" + guid + "\", \"time\" : \"0\"}";
 
             try(OutputStream os = con.getOutputStream()) {
                 byte[] input = jsonInputString.getBytes("utf-8");
@@ -120,14 +165,13 @@ public class Main {
                     response.append(responseLine.trim());
                 }
                 System.out.println("Response: " + response.toString());
-                //TODO response should be converted to json to string
 
                 choseAction(response.toString(), guid);
             }
             catch (Exception e) {
                 System.out.println("Retrieve Data Response Massage " + e.getMessage());
                 System.out.println("Retrieve Data Response StackTrace " + e.getStackTrace());
-            }
+            }*/
         }
 
     }
