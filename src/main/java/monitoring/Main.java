@@ -10,7 +10,6 @@ public class Main {
     //private static String MemucPath = "\"D:\\Memu\\MEmu\\memuc.exe\"";
     private static String MemucPath = "\"C:\\Program Files\\Microvirt\\MEmu\\memuc.exe\"";
     //TODO Program Files or Program Files (x86)
-    private static Set<String> tryLaterDevices = new HashSet<>();
     //TODO Need to decided what to do with tryLaterDevices
 
     private static int tryStopCount = 0;
@@ -31,7 +30,7 @@ public class Main {
 
     private static Set<String> devices;
 
-    private static HashMap<String, String> androidIdIndex = new HashMap<>();
+    private static HashMap<String, String> androidIdIndex;
 
     private static URL url;
     private static HttpURLConnection connection;
@@ -42,6 +41,7 @@ public class Main {
         //devices = readFile();
         devices = new HashSet<>();
         devices.add("19");
+        androidIdIndex = new HashMap<>();
         //TODO this list can be got using memuc listvms
 
         for(String device : devices) {
