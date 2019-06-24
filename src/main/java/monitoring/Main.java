@@ -47,7 +47,9 @@ public class Main {
     public static void main(String[] args) {
 
         whereClause = "";
-        devices = readFile();
+        //devices = readFile();
+        devices = new HashSet<>();
+        devices.add("19");
         //TODO this list can be got using memuc listvms
 
         for(String device : devices) {
