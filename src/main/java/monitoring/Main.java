@@ -55,15 +55,23 @@ public class Main {
         for(String device : devices) {
             //Done by using Android ID. There's been an error while using IMEI
             //TODO This numbers will be used to retrieve Android ID by running adb command to retrieve data from database and will be used to restart the devices
-            String androidIdCommand = MemucPath + " adb -i" + device + " shell settings get secure android_id";
+            String androidIdCommand = MemucPath + " -i " + device + " adb shell settings get secure android_id";
             String cmdOutput = runcmd(androidIdCommand);
-            String androidId = produceOutput(cmdOutput, androidIdCommand);
+            String resultLines = produceOutput(cmdOutput, androidIdCommand);
+            String lines[] = resultLines.split("\\r?\\n");
+
+            String androidId = lines[lines.length-1];
+
+            //test
+            androidId = "188a38763f697b7c";
+
+            System.out.println("AndoridId " + androidId);
             //TODO Need to figure out what exactly the String out is to create the exact Where Clause string
             if(whereClause.length() == 0) {
-                whereClause += "where time = " + androidId;
+                whereClause += "where guid = " + androidId;
             }
             else {
-                whereClause += " or time = " + androidId;
+                whereClause += " or guid = " + androidId;
             }
             //TODO HashMap key Android ID, value String device
             androidIdIndex.put(androidId, device); // Need to get androidId from out variable
@@ -73,23 +81,36 @@ public class Main {
         //TODO Select Clause should contain just guid and time and FROM Clause is campaignUp.device
         //TODO The string of the whole query will be written here
 
-        query = "select guid, time from campaignUp.device " + whereClause;
+        query = "select guid, time from campaignUp.device " + whereClause + ";";
+
+        System.out.println("Query " + query);
 
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/campaignup","root","root");
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://193.117.153.196:3306/campaignUp","root","root");
             //TODO locolhost must be changed to actual ip address of the server that this program is running on
             statement = connection.createStatement();
 
+            //test
+            System.out.println("Statement: " + statement.toString());
+
         }
         catch(Exception e) {
-            System.out.println(e.getStackTrace());
+            System.out.println("DB Message: " + e.getMessage());
+            System.out.println("DB StackTrace: " + e.getStackTrace());
         }
+
+        System.out.println("Query " +query);
+
+
+
 
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
+                //test
+                System.out.println("Timer Run");
                 retrieveData(connection, statement, query);
 
             }
@@ -103,26 +124,52 @@ public class Main {
         timer.schedule(timerTask, delay, period);
 
 
+        try {
+            connection.close();
+        }
+        catch (Exception e) {
+            System.out.println("Connection close message " + e.getMessage());
+            System.out.println("Connection close stack trace " + e.getStackTrace());
+        }
+
     }
 
 
     public static void retrieveData(Connection con, Statement stmt, String query) {
         //TODO SQL query will be written here and logic of monitoring will be implemented
         //TODO The name of method can be changed
+        //test
+        System.out.println("Retrieve Data");
         try {
+
+            //test
+            System.out.println("There is an error on executeQuery()");
             ResultSet resultSet = stmt.executeQuery(query);
+            //test
+            System.out.println("Result Set: " + resultSet);
             while(resultSet.next()) {
+                //test
+                System.out.println("Result Set");
                 String dbGuid = resultSet.getString(1);
                 String dbTime = resultSet.getString(2);
+
+                //test
+                System.out.println("dbGuid: " + dbGuid + " dbTime: " + dbTime);
 
                 long nowLong = Calendar.getInstance().getTimeInMillis();
                 long dbTimeLong = Long.parseLong(dbTime);
 
                 String index = androidIdIndex.get(dbGuid);
 
+                //test
+                index = "19";
+
                 String runningCommand = MemucPath + " isvmrunning -i" + index;
                 String cmdOutput = runcmd(runningCommand);
                 String isRunning = produceOutput(cmdOutput, runningCommand);
+
+                //test
+                isRunning = "Not Running";
 
                 if((nowLong - dbTimeLong >= 1000 * 60 * 5)) {
                     //TODO if it is running restart it, but if it is not running start it
@@ -136,8 +183,8 @@ public class Main {
             }
         }
         catch (Exception e) {
-            System.out.println(e.getMessage());
-            System.out.println(e.getStackTrace());
+            System.out.println("Retrieve Data Massage " + e.getMessage());
+            System.out.println("Retrieve Data StackTrace " + e.getStackTrace());
         }
 
 
@@ -225,6 +272,7 @@ public class Main {
     private static void restartDevices(Set<String> Devices) {
         tryStartCount = 0;
         tryStopCount = 0;
+        /*
         Devices.stream().forEach(d ->
         {
             restartDevices(d);
@@ -232,10 +280,18 @@ public class Main {
                 Thread.sleep(60000*3);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }*/
+            }
         });
 
-        //TODO Need to decide to use which strategy. The code snipped above or advance for loop like for(String device : Set<String> Devices)
+
+         */
+
+        for(String device : devices) {
+            restartDevices(device);
+        }
+
+
+            //TODO Need to decide to use which strategy. The code snipped above or advance for loop like for(String device : Set<String> Devices)
     }
 
     private static void restartDevices(String device){
