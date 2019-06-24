@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="86df0e39-1f91-4aa9-b666-a6cef8d55727" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/MemuMonitoring.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="86df0e39-1f91-4aa9-b666-a6cef8d55727" name="Default" comment="Test">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/monitoring/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/monitoring/Main.java" afterDir="false" />
     </list>
@@ -33,8 +31,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/monitoring/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="310">
-              <caret line="93" lean-forward="true" selection-start-line="93" selection-end-line="93" />
+            <state relative-caret-position="89">
+              <caret line="335" column="6" selection-start-line="335" selection-start-column="6" selection-end-line="335" selection-end-column="6" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#3789#3962#0" expanded="true" />
@@ -214,12 +212,20 @@
       <updated>1561376123244</updated>
       <workItem from="1561376128794" duration="521000" />
       <workItem from="1561380401530" duration="546000" />
-      <workItem from="1561383010147" duration="6949000" />
+      <workItem from="1561383010147" duration="9213000" />
     </task>
+    <task id="LOCAL-00001" summary="Test">
+      <created>1561392882791</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1561392882791</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="8016000" />
+    <option name="totallyTimeSpent" value="10280000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1696" height="985" extended-state="6" />
@@ -260,6 +266,10 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Test" />
+    <option name="LAST_COMMIT_MESSAGE" value="Test" />
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/java/monitoring/Logs.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -284,8 +294,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/monitoring/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="93" lean-forward="true" selection-start-line="93" selection-end-line="93" />
+        <state relative-caret-position="89">
+          <caret line="335" column="6" selection-start-line="335" selection-start-column="6" selection-end-line="335" selection-end-column="6" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#3789#3962#0" expanded="true" />

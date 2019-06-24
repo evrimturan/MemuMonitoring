@@ -9,6 +9,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.*;
+import java.net.URL;
+import java.net.HttpURLConnection;
 
 public class Main {
 
@@ -330,6 +332,34 @@ public class Main {
     public static void notifyAdmins() {
         //TODO notifying the admins by email or whatsapp notification will be implemented here
     }
+
+    /*public static void sendHttpRequest(String guid) {
+        try {
+            URL url = new URL ("locolhost:8080/monitoring");
+            HttpURLConnection con = (HttpURLConnection)url.openConnection();
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Type", "application/json; utf-8");
+            con.setRequestProperty("Accept", "application/json");
+            con.setDoOutput(true);
+
+            String jsonInputString = "{\"guid\": " + "\"" + guid + "\""  + "}";
+
+
+            try(OutputStream os = con.getOutputStream()) {
+                byte[] input = jsonInputString.getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+
+
+
+
+        }
+        catch (Exception e) {
+            System.out.println("HTTP Request: " +e.getMessage() );
+            System.out.println("HTTP Request: " +e.getStackTrace());
+        }
+
+    } */
 
 
 }
