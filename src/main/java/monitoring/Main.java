@@ -1,13 +1,6 @@
 package monitoring;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.io.*;
 import java.util.*;
 import java.net.URL;
 import java.net.HttpURLConnection;
@@ -36,19 +29,16 @@ public class Main {
         }
     };
 
-    private static Connection connection;
-    private static Statement statement;
-
     private static Set<String> devices;
 
-    private static String whereClause;
-    private static String query;
     private static HashMap<String, String> androidIdIndex = new HashMap<>();
+
+    private static URL url;
+    private static HttpURLConnection connection;
 
 
     public static void main(String[] args) {
 
-        whereClause = "";
         //devices = readFile();
         devices = new HashSet<>();
         devices.add("19");
@@ -66,46 +56,24 @@ public class Main {
 
             //test
             androidId = "188a38763f697b7c";
-
             System.out.println("AndoridId " + androidId);
-            //TODO Need to figure out what exactly the String out is to create the exact Where Clause string
-            if(whereClause.length() == 0) {
-                whereClause += "where guid = " + androidId;
-            }
-            else {
-                whereClause += " or guid = " + androidId;
-            }
+
             //TODO HashMap key Android ID, value String device
             androidIdIndex.put(androidId, device); // Need to get androidId from out variable
         }
 
-        //TODO The string of Where Clause of SQL query will be written here
-        //TODO Select Clause should contain just guid and time and FROM Clause is campaignUp.device
-        //TODO The string of the whole query will be written here
-
-        query = "select guid, time from campaignUp.device " + whereClause + ";";
-
-        System.out.println("Query " + query);
-
-
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://193.117.153.196:3306/campaignUp","root","root");
-            //TODO locolhost must be changed to actual ip address of the server that this program is running on
-            statement = connection.createStatement();
-
-            //test
-            System.out.println("Statement: " + statement.toString());
-
+            url = new URL ("locolhost:8080/monitoring");
+            connection = (HttpURLConnection)url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json; utf-8");
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setDoOutput(true);
         }
-        catch(Exception e) {
-            System.out.println("DB Message: " + e.getMessage());
-            System.out.println("DB StackTrace: " + e.getStackTrace());
+        catch (Exception e) {
+            System.out.println("HTTP Request: " +e.getMessage() );
+            System.out.println("HTTP Request: " +e.getStackTrace());
         }
-
-        System.out.println("Query " +query);
-
-
 
 
         TimerTask timerTask = new TimerTask() {
@@ -113,8 +81,7 @@ public class Main {
             public void run() {
                 //test
                 System.out.println("Timer Run");
-                retrieveData(connection, statement, query);
-
+                retrieveData(connection);
             }
         };
 
@@ -125,74 +92,76 @@ public class Main {
 
         timer.schedule(timerTask, delay, period);
 
-
-        try {
-            connection.close();
-        }
-        catch (Exception e) {
-            System.out.println("Connection close message " + e.getMessage());
-            System.out.println("Connection close stack trace " + e.getStackTrace());
-        }
-
     }
 
 
-    public static void retrieveData(Connection con, Statement stmt, String query) {
+    public static void retrieveData(HttpURLConnection con) {
         //TODO SQL query will be written here and logic of monitoring will be implemented
         //TODO The name of method can be changed
         //test
         System.out.println("Retrieve Data");
-        try {
 
-            //test
-            System.out.println("There is an error on executeQuery()");
-            ResultSet resultSet = stmt.executeQuery(query);
-            //test
-            System.out.println("Result Set: " + resultSet);
-            while(resultSet.next()) {
-                //test
-                System.out.println("Result Set");
-                String dbGuid = resultSet.getString(1);
-                String dbTime = resultSet.getString(2);
+        for(String guid : androidIdIndex.keySet()) {
+            String jsonInputString = "{\"guid\": " + "\"" + guid + "\""  + "}";
 
-                //test
-                System.out.println("dbGuid: " + dbGuid + " dbTime: " + dbTime);
+            try(OutputStream os = con.getOutputStream()) {
+                byte[] input = jsonInputString.getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+            catch (Exception e) {
+                System.out.println("Retrieve Data Request Massage " + e.getMessage());
+                System.out.println("Retrieve Data Request StackTrace " + e.getStackTrace());
+            }
 
-                long nowLong = Calendar.getInstance().getTimeInMillis();
-                long dbTimeLong = Long.parseLong(dbTime);
-
-                String index = androidIdIndex.get(dbGuid);
-
-                //test
-                index = "19";
-
-                String runningCommand = MemucPath + " isvmrunning -i" + index;
-                String cmdOutput = runcmd(runningCommand);
-                String isRunning = produceOutput(cmdOutput, runningCommand);
-
-                //test
-                isRunning = "Not Running";
-
-                if((nowLong - dbTimeLong >= 1000 * 60 * 5)) {
-                    //TODO if it is running restart it, but if it is not running start it
-                    if(isRunning.equals("Running")) {
-                        restartDevices(index);
-                    }
-                    else if(isRunning.equals("Not Running")) {
-                        startDevice(index);
-                    }
+            try(BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
+                StringBuilder response = new StringBuilder();
+                String responseLine = null;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
                 }
+                System.out.println("Response: " + response.toString());
+                //TODO response should be converted to json to string
+
+                choseAction(response.toString(), guid);
+            }
+            catch (Exception e) {
+                System.out.println("Retrieve Data Response Massage " + e.getMessage());
+                System.out.println("Retrieve Data Response StackTrace " + e.getStackTrace());
             }
         }
-        catch (Exception e) {
-            System.out.println("Retrieve Data Massage " + e.getMessage());
-            System.out.println("Retrieve Data StackTrace " + e.getStackTrace());
+
+    }
+
+    public static void choseAction(String result, String guid) {
+        //TODO if there are 5 minute difference between time stamp of the device and now, the index of device will be found using androidIDIndex HashMap
+        //TODO The devices will be restarted
+
+        long now = Calendar.getInstance().getTimeInMillis();
+        long dbtime = Long.parseLong(result);
+
+        String index = androidIdIndex.get(guid);
+
+        //test
+        index = "19";
+
+        String runningCommand = MemucPath + " isvmrunning -i " + index;
+        String cmdOutput = runcmd(runningCommand);
+        String isRunning = produceOutput(cmdOutput, runningCommand);
+
+        //test
+        isRunning = "Not Running";
+
+        if(now - dbtime > 1000 * 60 * 5) {
+            //TODO if it is running restart it, but if it is not running start it
+            if(isRunning.equals("Running")) {
+                restartDevices(index);
+            }
+            else if(isRunning.equals("Not Running")) {
+                startDevice(index);
+            }
         }
 
 
-
-        //TODO if there are 5 minute difference between time stamp of the device and now, the index of device will be found using androidIDIndex HashMap
-        //TODO The devices will be restarted
     }
 
     public static void startDevice(String device) {
