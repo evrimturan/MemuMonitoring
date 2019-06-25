@@ -130,17 +130,16 @@ public class Main {
                     System.out.println("Send");
                 }
 
-                try(BufferedReader br = new BufferedReader(
-                        new InputStreamReader(con.getInputStream(), "utf-8"))) {
+                try(BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
                     StringBuilder response = new StringBuilder();
                     String responseLine = null;
                     while ((responseLine = br.readLine()) != null) {
                         response.append(responseLine.trim());
-                        //TODO response should be converted to json to string
 
-                        choseAction(response.toString(), guid);
                     }
+                    //TODO response should be converted to json to string
                     System.out.println("Response: " + response.toString());
+                    choseAction(response.toString(), guid);
                 }
             }
             catch (Exception e) {
