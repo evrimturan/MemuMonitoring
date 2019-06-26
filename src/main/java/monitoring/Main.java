@@ -101,6 +101,13 @@ public class Main {
 
     }
 
+    public boolean checkWithAdb(String device) {
+        String command = MemucPath + " -i " + device + " adb shell";
+        String cmdOutput = runcmd(command);
+        String check = "already connected";
+        return checkOutput(cmdOutput, check, command);
+    }
+
 
     public static void retrieveData() {
         //TODO SQL query will be written here and logic of monitoring will be implemented

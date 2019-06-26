@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="86df0e39-1f91-4aa9-b666-a6cef8d55727" name="Default" comment="HTTP Request">
-      <change afterPath="$PROJECT_DIR$/Devices.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="86df0e39-1f91-4aa9-b666-a6cef8d55727" name="Default" comment="choseAction checked and Devices.txt added">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/monitoring/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/monitoring/Main.java" afterDir="false" />
     </list>
@@ -16,8 +14,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DefaultGradleProjectSettings">
-    <option name="testRunner" value="GRADLE" />
-    <option name="delegatedBuild" value="true" />
+    <option name="isMigrated" value="true" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
@@ -30,25 +27,23 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/monitoring/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4692">
-              <caret line="42" column="43" selection-start-line="42" selection-start-column="43" selection-end-line="42" selection-end-column="43" />
+            <state relative-caret-position="-2167">
+              <caret line="107" column="54" selection-start-line="107" selection-start-column="54" selection-end-line="107" selection-end-column="54" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#711#712#0" expanded="true" />
                 <element signature="e#764#765#0" expanded="true" />
                 <element signature="e#861#862#0" expanded="true" />
                 <element signature="e#914#915#0" expanded="true" />
-                <element signature="e#2924#3167#0" expanded="true" />
-                <element signature="e#3166#3167#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Devices.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state>
@@ -93,23 +88,20 @@
         <option value="$PROJECT_DIR$/src/main/java/monitoring/Logs.java" />
         <option value="$PROJECT_DIR$/src/main/java/monitoring/SyncPipe.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/monitoring/Main.java" />
         <option value="$PROJECT_DIR$/Devices.txt" />
+        <option value="$PROJECT_DIR$/src/main/java/monitoring/Main.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="x" value="128" />
-    <option name="y" value="20" />
-    <option name="width" value="1402" />
-    <option name="height" value="948" />
+  <component name="ProjectFrameBounds">
+    <option name="width" value="1680" />
+    <option name="height" value="1050" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
@@ -122,7 +114,7 @@
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -207,6 +199,7 @@
       <workItem from="1561380401530" duration="546000" />
       <workItem from="1561383010147" duration="9213000" />
       <workItem from="1561419439116" duration="1518000" />
+      <workItem from="1561551453020" duration="870000" />
     </task>
     <task id="LOCAL-00001" summary="Test">
       <created>1561392882791</created>
@@ -236,11 +229,18 @@
       <option name="project" value="LOCAL" />
       <updated>1561420493630</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="choseAction checked and Devices.txt added">
+      <created>1561481282934</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1561481282934</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15703000" />
+    <option name="totallyTimeSpent" value="16759000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -252,10 +252,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-5" y="2" width="1688" height="972" extended-state="0" />
+    <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26658475" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2695599" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -264,7 +264,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49925485" visible="true" weight="0.30035758" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49925485" weight="0.30035758" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -295,9 +295,24 @@
     <MESSAGE value="HTTP Request and what action to chose added without testing" />
     <MESSAGE value="Variables edited" />
     <MESSAGE value="HTTP request and data fetch fixed" />
-    <option name="LAST_COMMIT_MESSAGE" value="HTTP request and data fetch fixed" />
+    <MESSAGE value="choseAction checked and Devices.txt added" />
+    <option name="LAST_COMMIT_MESSAGE" value="choseAction checked and Devices.txt added" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="13" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Devices.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="2" selection-start-column="2" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/monitoring/Logs.java">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -312,33 +327,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="13" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/monitoring/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4692">
-          <caret line="42" column="43" selection-start-line="42" selection-start-column="43" selection-end-line="42" selection-end-column="43" />
+        <state relative-caret-position="-2167">
+          <caret line="107" column="54" selection-start-line="107" selection-start-column="54" selection-end-line="107" selection-end-column="54" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#711#712#0" expanded="true" />
             <element signature="e#764#765#0" expanded="true" />
             <element signature="e#861#862#0" expanded="true" />
             <element signature="e#914#915#0" expanded="true" />
-            <element signature="e#2924#3167#0" expanded="true" />
-            <element signature="e#3166#3167#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Devices.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="2" selection-start-column="2" selection-end-column="2" />
         </state>
       </provider>
     </entry>
