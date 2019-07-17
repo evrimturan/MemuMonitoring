@@ -48,13 +48,15 @@ public class Main {
 
     public static void main(String[] args) {
 
-        //test
-        //devices = readFile();
 
-        devices = new HashSet<>();
+        devices = readFile();
+        System.out.println("devices elements: " + devices.contains("19"));
+
+
 
         //test
-        devices.add("19");
+        //devices.add("19");
+        //devices = new HashSet<>();
 
         androidIdIndex = new HashMap<>();
         //TODO this list can be got using memuc listvms
@@ -265,14 +267,14 @@ public class Main {
         String index = androidIdIndex.get(guid);
 
         //test
-        index = "19";
+        //index = "19";
 
         String runningCommand = MemucPath + " isvmrunning -i " + index;
         String cmdOutput = runcmd(runningCommand);
         String isRunning = produceOutput(cmdOutput, runningCommand);
 
         //test
-        isRunning = "Not Running";
+        //isRunning = "Not Running";
 
         if(now - dbtime > 1000 * 60 * 5) {
             //TODO if it is running restart it, but if it is not running start it
