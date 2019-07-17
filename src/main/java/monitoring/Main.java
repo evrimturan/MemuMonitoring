@@ -66,15 +66,15 @@ public class Main {
             //TODO This numbers will be used to retrieve Android ID by running adb command to retrieve data from database and will be used to restart the devices
 
             //test localhost
-            /*String androidIdCommand = MemucPath + " -i " + device + " adb shell settings get secure android_id";
+            String androidIdCommand = MemucPath + " -i " + device + " adb shell settings get secure android_id";
             String cmdOutput = runcmd(androidIdCommand);
             String resultLines = produceOutput(cmdOutput, androidIdCommand);
             String lines[] = resultLines.split("\\r?\\n");
 
-            String androidId = lines[lines.length-1];*/
+            String androidId = lines[lines.length-1];
 
-            //test delete String before androidID
-            String androidId = "188a38763f697b7c";
+            //test
+            androidId = "188a38763f697b7c";
             System.out.println("AndoridId " + androidId);
 
             //TODO HashMap key Android ID, value String device
@@ -114,6 +114,21 @@ public class Main {
 
         timer.schedule(timerTask, delay, period);
 
+        TimerTask timerTaskRestartAll = new TimerTask() {
+            @Override
+            public void run() {
+                //test
+                System.out.println("Timer Run for Restart All");
+                restartDevices(devices);
+            }
+        };
+
+        Timer timerForRestartAll = new Timer("Timer for Restart All");
+
+        long periodForRestartAll = 1000 * 60 * 2;
+
+        timer.schedule(timerTaskRestartAll, delay, periodForRestartAll);
+
     }
 
 
@@ -125,8 +140,8 @@ public class Main {
 
             try {
 
-                URL urlTest = new URL("http://localhost:8080/monitoring");
-                //URL urlTest = new URL("http://104.40.132.100:80/monitoring");
+                //URL urlTest = new URL("http://localhost:8080/monitoring");
+                URL urlTest = new URL("http://104.40.132.100:80/monitoring");
                 HttpURLConnection conTest = (HttpURLConnection)urlTest.openConnection();
 
                 conTest.connect();
@@ -136,8 +151,8 @@ public class Main {
                 }
                 conTest.disconnect();
 
-                URL url = new URL("http://localhost:8080/monitoring");
-                //URL url = new URL("http://104.40.132.100:80/monitoring");
+                //URL url = new URL("http://localhost:8080/monitoring");
+                URL url = new URL("http://104.40.132.100:80/monitoring");
                 HttpURLConnection con = (HttpURLConnection)url.openConnection();
                 con.setRequestMethod("POST");
                 con.setRequestProperty("Content-Type", "application/json; utf-8");
@@ -210,8 +225,8 @@ public class Main {
     public static void authenticate() {
 
         try {
-            URL url = new URL("http://localhost:8080/authenticate");
-            //URL url = new URL("http://104.40.132.100:80/monitoring");
+            //URL url = new URL("http://localhost:8080/authenticate");
+            URL url = new URL("http://104.40.132.100:80/authenticate");
             HttpURLConnection con = (HttpURLConnection)url.openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json; utf-8");
@@ -271,7 +286,12 @@ public class Main {
 
         String runningCommand = MemucPath + " isvmrunning -i " + index;
         String cmdOutput = runcmd(runningCommand);
-        String isRunning = produceOutput(cmdOutput, runningCommand);
+        String isRunningTemplate = produceOutput(cmdOutput, runningCommand);
+
+        String[] isRunningLines = isRunningTemplate.split("\\r?\\n");
+        String isRunning = isRunningLines[isRunningLines.length-1];
+
+        System.out.println("isRunning: " + isRunning);
 
         //test
         //isRunning = "Not Running";
@@ -279,10 +299,17 @@ public class Main {
         if(now - dbtime > 1000 * 60 * 5) {
             //TODO if it is running restart it, but if it is not running start it
             if(isRunning.equals("Running")) {
-                restartDevices(index);
+                restartDevice(index);
             }
             else if(isRunning.equals("Not Running")) {
+                //System.out.println("startDevice: " + index);
                 startDevice(index);
+            }
+            try {
+                Thread.sleep(1000 * 60);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
@@ -290,6 +317,7 @@ public class Main {
     }
 
     public static void startDevice(String device) {
+
         Logs.appendLog("Device "+ device +" starts up.");
         String command = MemucPath + " start -i "+ device;
         String output = runcmd(command);
@@ -386,16 +414,28 @@ public class Main {
          */
 
         for(String device : devices) {
-            restartDevices(device);
+            restartDevice(device);
+            try {
+                Thread.sleep(1000 * 60);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
 
             //TODO Need to decide to use which strategy. The code snipped above or advance for loop like for(String device : Set<String> Devices)
     }
 
-    private static void restartDevices(String device){
+    private static void restartDevice(String device){
         Logs.appendLog( "Device "+ device +" restarting." );
         stopDevice(device);
+        try {
+            Thread.sleep(1000 * 60);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         startDevice(device);
     }
 
@@ -428,8 +468,8 @@ public class Main {
 
     public static void notifyAdmins(String text) {
 
-        mail = new SendEmail("a", "b", "c");
-        mail.createMessage("Memu Emulator Error", text, "admin mail list");
+        mail = new SendEmail("campaignuptest@gmail.com", "!Q2w3e4r", "TLS");
+        mail.createMessage("Memu Emulator Error", text, "campaignuptest@gmail.com");
         mail.sendMessage();
 
     }
