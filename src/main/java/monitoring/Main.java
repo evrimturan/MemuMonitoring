@@ -32,6 +32,14 @@ public class Main {
 
     private static HashMap<String, String> androidIdIndex;
 
+    private static final String username = "evrimturan";
+
+    private static final String password = "123456";
+
+    private static String token = "";
+
+    private static SendEmail mail;
+
     /*
     private static URL url;
     private static HttpURLConnection connection;
@@ -40,24 +48,31 @@ public class Main {
 
     public static void main(String[] args) {
 
+        //test
         //devices = readFile();
+
         devices = new HashSet<>();
+
+        //test
         devices.add("19");
+
         androidIdIndex = new HashMap<>();
         //TODO this list can be got using memuc listvms
 
         for(String device : devices) {
             //Done by using Android ID. There's been an error while using IMEI
             //TODO This numbers will be used to retrieve Android ID by running adb command to retrieve data from database and will be used to restart the devices
-            String androidIdCommand = MemucPath + " -i " + device + " adb shell settings get secure android_id";
+
+            //test localhost
+            /*String androidIdCommand = MemucPath + " -i " + device + " adb shell settings get secure android_id";
             String cmdOutput = runcmd(androidIdCommand);
             String resultLines = produceOutput(cmdOutput, androidIdCommand);
             String lines[] = resultLines.split("\\r?\\n");
 
-            String androidId = lines[lines.length-1];
+            String androidId = lines[lines.length-1];*/
 
-            //test
-            androidId = "188a38763f697b7c";
+            //test delete String before androidID
+            String androidId = "188a38763f697b7c";
             System.out.println("AndoridId " + androidId);
 
             //TODO HashMap key Android ID, value String device
@@ -93,7 +108,7 @@ public class Main {
         Timer timer = new Timer("Timer");
 
         long delay = 1000;
-        long period = 1000 * 60 * 1;
+        long period = 1000 * 60 * 2;
 
         timer.schedule(timerTask, delay, period);
 
@@ -101,33 +116,46 @@ public class Main {
 
 
     public static void retrieveData() {
-        //TODO SQL query will be written here and logic of monitoring will be implemented
-        //TODO The name of method can be changed
         //test
         System.out.println("Retrieve Data");
 
         for(String guid : androidIdIndex.keySet()) {
 
-
             try {
+
+                URL urlTest = new URL("http://localhost:8080/monitoring");
+                //URL urlTest = new URL("http://104.40.132.100:80/monitoring");
+                HttpURLConnection conTest = (HttpURLConnection)urlTest.openConnection();
+
+                conTest.connect();
+                if(conTest.getResponseCode() == 401) {
+                    System.out.println("Retrieve Data Connection Response Code: " + conTest.getResponseCode());
+                    authenticate();
+                }
+                conTest.disconnect();
+
                 URL url = new URL("http://localhost:8080/monitoring");
+                //URL url = new URL("http://104.40.132.100:80/monitoring");
                 HttpURLConnection con = (HttpURLConnection)url.openConnection();
                 con.setRequestMethod("POST");
                 con.setRequestProperty("Content-Type", "application/json; utf-8");
                 con.setRequestProperty("Accept", "application/json");
+                con.setRequestProperty("Authorization", token);
                 con.setDoOutput(true);
 
+                System.out.println("Retrieve Data Token: " + token);
+
                 //test
-                guid = "123";
+                //guid = "123";
                 //String jsonInputString = "{\"guid\" : \"123\", \"time\" : \"000\"}";
 
                 String jsonInputString = "{\"guid\" : " + "\"" + guid + "\", \"time\" : \"0\"}";
 
                 try(OutputStream os = con.getOutputStream()) {
-                    System.out.println("Before Send");
+                    System.out.println("Retrieve Data Before Send");
                     byte[] input = jsonInputString.getBytes("utf-8");
                     os.write(input, 0, input.length);
-                    System.out.println("Send");
+                    System.out.println("Retrieve Data Send");
                 }
 
                 try(BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
@@ -137,14 +165,16 @@ public class Main {
                         response.append(responseLine.trim());
 
                     }
-                    //TODO response should be converted to json to string
-                    System.out.println("Response: " + response.toString());
+                    System.out.println("Retrieve Data Response: " + response.toString());
                     choseAction(response.toString(), guid);
                 }
+                con.disconnect();
             }
             catch (Exception e) {
-                System.out.println("Exception Message: " + e.getMessage());
+                System.out.println("Retrieve Data Exception Message: " + e.getMessage());
+
             }
+
 
             /*String jsonInputString = "{\"guid\" : " + "\"" + guid + "\", \"time\" : \"0\"}";
 
@@ -175,10 +205,60 @@ public class Main {
 
     }
 
+    public static void authenticate() {
+
+        try {
+            URL url = new URL("http://localhost:8080/authenticate");
+            //URL url = new URL("http://104.40.132.100:80/monitoring");
+            HttpURLConnection con = (HttpURLConnection)url.openConnection();
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Type", "application/json; utf-8");
+            con.setRequestProperty("Accept", "application/json");
+            con.setDoOutput(true);
+
+            con.connect();
+            //System.out.println("Authentication Connection Response Code: " + con.getResponseCode());
+
+            String jsonInputString = "{\"username\" : " + "\"" + username + "\", \"password\" : " + "\"" + password + "\"}";
+
+            System.out.println(jsonInputString);
+
+            try(OutputStream os = con.getOutputStream()) {
+                System.out.println("Before Send Authentication");
+                byte[] input = jsonInputString.getBytes("utf-8");
+                os.write(input, 0, input.length);
+                System.out.println("Authentication Send");
+            }
+
+            try(BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
+                StringBuilder response = new StringBuilder();
+                String responseLine = null;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+
+                }
+                System.out.println("Authentication Response: " + response.toString());
+                setToken(response.toString());
+            }
+
+
+        }
+        catch (Exception e) {
+            System.out.println("Authentication Exception Message: " + e.getMessage());
+        }
+    }
+
+    public static void setToken(String response) {
+        String t = response.substring(10, response.length() - 2 );
+        token = "Bearer " + t;
+        System.out.println("SetToken Token: " + token);
+    }
+
     public static void choseAction(String result, String guid) {
         //TODO if there are 5 minute difference between time stamp of the device and now, the index of device will be found using androidIDIndex HashMap
         //TODO The devices will be restarted
 
+        //time can be set right before db connection
         long now = Calendar.getInstance().getTimeInMillis();
         long dbtime = Long.parseLong(result);
 
@@ -218,7 +298,9 @@ public class Main {
         }else if(tryStartCount == 10 && operationControl == 0) {
             tryStartCount = 0;
             Logs.appendLog("Device "+ device +" failed to start. Once the other devices are turned on, it will be tried again.");
-            //TODO notifyAdmins() method will be added
+
+            //test
+            //notifyAdmins("There is an problem with the Device " + device);
         }else{
             tryStartCount ++;
             Logs.appendLog("Device "+ device +" failed to start. Count = "+tryStartCount);
@@ -234,11 +316,12 @@ public class Main {
         if(check){
             tryStopCount = 0;
             Logs.appendLog("Device "+ device +" stopped successfully.");
-            startDevice(device);
         }else if(tryStopCount == 10 && operationControl == 0){
             tryStopCount = 0;
             Logs.appendLog("Device "+ device +" could not be stopped. Once the other devices are turned on, it will be tried again.");
-            //TODO notifyAdmins() method will be implemented
+
+            //test
+            //notifyAdmins("There is an problem with the Device " + device);
         }else{
             tryStopCount ++;
             Logs.appendLog("Device "+ device +" could not be stopped. Trying again. Count = "+tryStopCount);
@@ -341,13 +424,17 @@ public class Main {
         return Devices;
     }
 
-    public static void notifyAdmins() {
-        //TODO notifying the admins by email or whatsapp notification will be implemented here
+    public static void notifyAdmins(String text) {
+
+        mail = new SendEmail("a", "b", "c");
+        mail.createMessage("Memu Emulator Error", text, "admin mail list");
+        mail.sendMessage();
+
     }
 
     /*public static void sendHttpRequest(String guid) {
         try {
-            URL url = new URL ("locolhost:8080/monitoring");
+            URL url = new URL ("localhost:8080/monitoring");
             HttpURLConnection con = (HttpURLConnection)url.openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json; utf-8");
