@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="86df0e39-1f91-4aa9-b666-a6cef8d55727" name="Default" comment="checkWithAdb method added">
-      <change afterPath="$PROJECT_DIR$/Devices.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="86df0e39-1f91-4aa9-b666-a6cef8d55727" name="Default" comment="Test started">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/monitoring/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/monitoring/Main.java" afterDir="false" />
     </list>
@@ -32,8 +30,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/monitoring/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3881">
-              <caret line="277" column="52" lean-forward="true" selection-start-line="277" selection-start-column="52" selection-end-line="277" selection-end-column="52" />
+            <state relative-caret-position="189">
+              <caret line="74" column="25" selection-start-line="74" selection-start-column="25" selection-end-line="74" selection-end-column="25" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#711#712#0" expanded="true" />
@@ -42,8 +40,6 @@
                 <element signature="e#914#915#0" expanded="true" />
                 <element signature="e#3238#3481#0" expanded="true" />
                 <element signature="e#3480#3481#0" expanded="true" />
-                <element signature="e#3673#3916#0" expanded="true" />
-                <element signature="e#3915#3916#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -100,6 +96,11 @@
         <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>sleep</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -292,11 +293,18 @@
       <option name="project" value="LOCAL" />
       <updated>1561421001670</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Test started">
+      <created>1563381597341</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1563381597341</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="33544000" />
+    <option name="totallyTimeSpent" value="36611000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
@@ -311,7 +319,7 @@
     <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.27261615" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1405868" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -320,7 +328,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49925485" visible="true" weight="0.13773796" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49925485" visible="true" weight="0.2362822" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -352,7 +360,8 @@
     <MESSAGE value="Variables edited" />
     <MESSAGE value="HTTP request and data fetch fixed" />
     <MESSAGE value="HTTP response while loop fixed" />
-    <option name="LAST_COMMIT_MESSAGE" value="HTTP response while loop fixed" />
+    <MESSAGE value="Test started" />
+    <option name="LAST_COMMIT_MESSAGE" value="Test started" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/java/monitoring/Logs.java">
@@ -399,8 +408,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/monitoring/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3881">
-          <caret line="277" column="52" lean-forward="true" selection-start-line="277" selection-start-column="52" selection-end-line="277" selection-end-column="52" />
+        <state relative-caret-position="189">
+          <caret line="74" column="25" selection-start-line="74" selection-start-column="25" selection-end-line="74" selection-end-column="25" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#711#712#0" expanded="true" />
@@ -409,8 +418,6 @@
             <element signature="e#914#915#0" expanded="true" />
             <element signature="e#3238#3481#0" expanded="true" />
             <element signature="e#3480#3481#0" expanded="true" />
-            <element signature="e#3673#3916#0" expanded="true" />
-            <element signature="e#3915#3916#0" expanded="true" />
           </folding>
         </state>
       </provider>

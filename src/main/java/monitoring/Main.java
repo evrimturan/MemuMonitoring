@@ -69,6 +69,11 @@ public class Main {
             String androidIdCommand = MemucPath + " -i " + device + " adb shell settings get secure android_id";
             String cmdOutput = runcmd(androidIdCommand);
             String resultLines = produceOutput(cmdOutput, androidIdCommand);
+
+            if(resultLines.length() == 0) {
+                notifyAdmins("There is an unknown error on Device " + device);
+                continue;
+            }
             String lines[] = resultLines.split("\\r?\\n");
 
             String androidId = lines[lines.length-1];
@@ -114,7 +119,7 @@ public class Main {
 
         timer.schedule(timerTask, delay, period);
 
-        TimerTask timerTaskRestartAll = new TimerTask() {
+        /*TimerTask timerTaskRestartAll = new TimerTask() {
             @Override
             public void run() {
                 //test
@@ -127,7 +132,7 @@ public class Main {
 
         long periodForRestartAll = 1000 * 60 * 2;
 
-        timer.schedule(timerTaskRestartAll, delay, periodForRestartAll);
+        timer.schedule(timerTaskRestartAll, delay, periodForRestartAll);*/
 
     }
 
@@ -135,6 +140,10 @@ public class Main {
     public static void retrieveData() {
         //test
         System.out.println("Retrieve Data");
+
+        long now = Calendar.getInstance().getTimeInMillis();
+        long dbtime;
+
 
         for(String guid : androidIdIndex.keySet()) {
 
@@ -183,7 +192,11 @@ public class Main {
 
                     }
                     System.out.println("Retrieve Data Response: " + response.toString());
-                    choseAction(response.toString(), guid);
+                    dbtime = Long.parseLong(response.toString());
+                    if(now - dbtime > 1000 * 60 * 5) {
+                        choseAction(guid);
+                    }
+
                 }
                 con.disconnect();
             }
@@ -271,13 +284,13 @@ public class Main {
         System.out.println("SetToken Token: " + token);
     }
 
-    public static void choseAction(String result, String guid) {
+    public static void choseAction(String guid) {
         //TODO if there are 5 minute difference between time stamp of the device and now, the index of device will be found using androidIDIndex HashMap
         //TODO The devices will be restarted
 
         //time can be set right before db connection
-        long now = Calendar.getInstance().getTimeInMillis();
-        long dbtime = Long.parseLong(result);
+        /*long now = Calendar.getInstance().getTimeInMillis();
+        long dbtime = Long.parseLong(result);*/
 
         String index = androidIdIndex.get(guid);
 
@@ -296,21 +309,20 @@ public class Main {
         //test
         //isRunning = "Not Running";
 
-        if(now - dbtime > 1000 * 60 * 5) {
-            //TODO if it is running restart it, but if it is not running start it
-            if(isRunning.equals("Running")) {
-                restartDevice(index);
-            }
-            else if(isRunning.equals("Not Running")) {
-                //System.out.println("startDevice: " + index);
-                startDevice(index);
-            }
-            try {
-                Thread.sleep(1000 * 60);
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
+
+        //TODO if it is running restart it, but if it is not running start it
+        if(isRunning.equals("Running")) {
+            restartDevice(index);
+        }
+        else if(isRunning.equals("Not Running")) {
+            //System.out.println("startDevice: " + index);
+            startDevice(index);
+        }
+        try {
+            Thread.sleep(1000 * 60);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
 
 
@@ -330,7 +342,7 @@ public class Main {
             Logs.appendLog("Device "+ device +" failed to start. Once the other devices are turned on, it will be tried again.");
 
             //test
-            //notifyAdmins("There is an problem with the Device " + device);
+            notifyAdmins("Device "+ device +" failed to start.");
         }else{
             tryStartCount ++;
             Logs.appendLog("Device "+ device +" failed to start. Count = "+tryStartCount);
@@ -351,7 +363,7 @@ public class Main {
             Logs.appendLog("Device "+ device +" could not be stopped. Once the other devices are turned on, it will be tried again.");
 
             //test
-            //notifyAdmins("There is an problem with the Device " + device);
+            notifyAdmins("Device "+ device +" could not be stopped.");
         }else{
             tryStopCount ++;
             Logs.appendLog("Device "+ device +" could not be stopped. Trying again. Count = "+tryStopCount);
