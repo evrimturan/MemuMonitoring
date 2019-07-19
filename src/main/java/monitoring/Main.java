@@ -48,6 +48,9 @@ public class Main {
 
     public static void main(String[] args) {
 
+        //
+        //notifyAdmins("Hello Admin");
+
 
         devices = readFile();
         System.out.println("devices elements: " + devices.contains("19"));
@@ -79,7 +82,8 @@ public class Main {
             String androidId = lines[lines.length-1];
 
             //test
-            androidId = "188a38763f697b7c";
+            //System.out.println("AndoridId " + androidId);
+            //androidId = "188a38763f697b7c";
             System.out.println("AndoridId " + androidId);
 
             //TODO HashMap key Android ID, value String device
@@ -175,7 +179,9 @@ public class Main {
                 //guid = "123";
                 //String jsonInputString = "{\"guid\" : \"123\", \"time\" : \"000\"}";
 
-                String jsonInputString = "{\"guid\" : " + "\"" + guid + "\", \"time\" : \"0\"}";
+                String jsonInputString = "{\"guid\" : \"" + guid.trim() + "\", \"time\" : \"0\"}";
+
+                System.out.println("JSON: " + jsonInputString);
 
                 try(OutputStream os = con.getOutputStream()) {
                     System.out.println("Retrieve Data Before Send");
@@ -198,7 +204,6 @@ public class Main {
                     }
 
                 }
-                con.disconnect();
             }
             catch (Exception e) {
                 System.out.println("Retrieve Data Exception Message: " + e.getMessage());

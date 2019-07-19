@@ -10,11 +10,14 @@ public class SendEmail {
     private String username;
     private String password;
     private Message message;
+    private String protocol;
     private String port;
 
     public SendEmail(String username, String password, String protocol) {
         this.username = username;
         this.password = password;
+        this.protocol = protocol;
+
         if(protocol.equals("TLS")) {
             this.port = "587";
         }
@@ -47,15 +50,24 @@ public class SendEmail {
         this.port = port;
     }
 
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
+    }
+
     public void createMessage(String subject, String text, String adminList) {
         Properties prop = new Properties();
         prop.put("mail.smtp.host", "smtp.gmail.com");
         prop.put("mail.smtp.port", port);
         prop.put("mail.smtp.auth", "true");
-        if(getPort().equals("TLS")) {
+        if(protocol.equals("TLS")) {
             prop.put("mail.smtp.starttls.enable", "true"); //TLS
         }
-        else if(getPort().equals("SSL")) {
+        else if(protocol.equals("SSL")) {
             prop.put("mail.smtp.socketFactory.port", "465");
             prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         }
