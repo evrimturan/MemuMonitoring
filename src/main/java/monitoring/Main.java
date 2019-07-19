@@ -53,12 +53,10 @@ public class Main {
 
 
         devices = readFile();
-        System.out.println("devices elements: " + devices.contains("19"));
-
-
 
         //test
         //devices.add("19");
+        //System.out.println("devices elements: " + devices.contains("19"));
         //devices = new HashSet<>();
 
         androidIdIndex = new HashMap<>();
